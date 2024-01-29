@@ -21,15 +21,19 @@ jobs:
           ansible-major-version: ${{ steps.split.outputs._0 }}
 
       - name: Get major version
-        run: echo ${{ steps.split.outputs._0 }}
+        run: echo "ANSIBLE_MAJOR=${{ steps.split.outputs._0 }}" >> $GITHUB_ENV
 
       # name: Define variable
         #env:
           #ansible-major-version: ${{ steps.split.outputs._0 }}
 
-
-      - name: Print greeting
-        run: echo "Hello World $ansible-major-version "
-      - name: Print goodbye
-        run : echo "Done - bye $ansible-major-version!"
+  second-job:
+    needs: first-job
+    name: Test stuff
+    runs-on: ubuntu-latest
+    steps:
+        - name: Print greeting
+          run: echo "Hello World $ANSIBLE_MAJOR "
+        - name: Print goodbye
+          run : echo "Done - bye $ansible-major-version!"
 
