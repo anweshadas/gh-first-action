@@ -1,10 +1,11 @@
 name: First Workflow
-on: workflow_dispatch #event- manual trigger
-  inputs:
-    ansible-version:
-      description: >-
-        Release Version. Example : 11.1.0
-      required: true
+on:
+  workflow_dispatch: #event- manual trigger
+    inputs:
+      ansible-version:
+        description: >-
+          Release Version. Example : 11.1.0
+        required: true
 jobs:
   first-job:
     runs-on: ubuntu-latest #runner
@@ -16,13 +17,15 @@ jobs:
          string: ${{ inputs.ansible-version }}
          separator: .
          limit: -1
+        env:
+          ansible-major-version: ${{ steps.split.outputs._0 }}
 
       - name: Get major version
         run: echo ${{ steps.split.outputs._0 }}
 
-      - name: Define variable
-        env:
-          ansible-major-version: ${{ steps.split.outputs._0 }}
+      # name: Define variable
+        #env:
+          #ansible-major-version: ${{ steps.split.outputs._0 }}
 
 
       - name: Print greeting
